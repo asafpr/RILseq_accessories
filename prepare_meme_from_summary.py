@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Read a summary file made by pro_clash_significant_regions.py of pro_clash
+Read a summary file made by RILseq_significant_regions.py of RILseq
 package and for the given sRNA generate a fasta file with all interacting
 regions
 """
@@ -25,7 +25,7 @@ def process_command_line(argv):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         'summary_file',
-        help='A pro_clash results file.')
+        help='A RILseq results file.')
     parser.add_argument(
         'sRNA',
         help='Name of sRNA that is found in the fourth column (common name).'

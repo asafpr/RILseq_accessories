@@ -75,7 +75,8 @@ def main(argv=None):
             continue
         ints, pv = test_fisher(v, acid_genes, settings.ngenes)
         print "%s (%d): %d, %g"%(k, len(v), ints, pv)
-        print v & set(acid_genes)
+        if ints:
+            print v & set(acid_genes)
     # application code here, like:
     # run(settings, args)
     return 0        # success

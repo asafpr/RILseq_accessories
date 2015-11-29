@@ -1,4 +1,13 @@
 #!/usr/bin/env python
+# A quick and dirty script to run a lot of MEME processes.
+# The input for the script should be a file in which each line is:
+# sRNA_name   RILseq_results_table.txt   output_dir
+# The script will run MEME using the targets in the file.
+# If something doesn't work try to change one of the executable/parameters at
+# the bottom of this script.
+# Some sRNAs (mainly predicted) requires to have a manually entered sequence.
+# This should be done by writing the sequence to the file:
+# "manual_sRNA_seqs/%s_sRNA_seq.fa"%sRNA_name"
 from subprocess import call, Popen, PIPE
 import fileinput
 import os
