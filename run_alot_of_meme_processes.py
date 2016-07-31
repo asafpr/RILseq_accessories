@@ -52,15 +52,21 @@ def run_line(line, genome, process, meme, seqer, mast, bnumer, cog_find):
                 "%s/srna_seq.fa"%outdir)
         else:
             with open("%s/srna_seq.fa"%outdir, 'w')as sf:
-                sf.write(">%s\n"%srname)
-                sf.flush()
-                sq = Popen(seqer, stdout=sf, stdin=PIPE)
-                sqline = srname
-                if '3UTR' in srname:
-                    sqline += " -50 100"
-                if '5UTR' in srname:
-                    sqline += " 50 -100"
-                sq.communicate(input=sqline)
+                blatn = srname
+                with open("/home/users/yael/Databases/biocyc/ecocyc/19.0/my-files/ecoid-to-genes-with-syn-but-no-syn-equal-major-no-obsolete-word-for-conversion", 'r') as blatner:
+                    for line in blatner.readlines():
+                        if srname.split('.')[0] == line.split('\t')[2]:
+                            blatn = line.split('\t')[1]
+                    sf.write(">%s\n"%srname)
+                    sf.flush()
+                    sq = Popen(seqer, stdout=sf, stdin=PIPE)
+                    sqline = blatn
+
+                    if '3UTR' in srname:
+                        sqline += " -50 100"
+                    if '5UTR' in srname:
+                        sqline += " 50 -100"
+                    sq.communicate(input=sqline)
         
         call(mast.split() + ['-m', '1', '-oc', "%s/mastout_m1"%outdir, "%s/meme.txt"%outdir, "%s/srna_seq.fa"%outdir])
         call(mast.split() + ['-m', '2', '-oc', "%s/mastout_m2"%outdir, "%s/meme.txt"%outdir, "%s/srna_seq.fa"%outdir])
@@ -68,12 +74,14 @@ def run_line(line, genome, process, meme, seqer, mast, bnumer, cog_find):
 
 meme = "meme -dna -mod zoops -maxsize 300000 -minw 6 -maxw 15 -nmotifs 3"
 mast = "mast -mt 0.01 -sep"
-seqer = "/home/users/assafp/lib/sequence.pl"
-cog_find = "/home/users/assafp/lib/cog_finder.pl"
-bnumer = "/home/users/assafp/lib/gene2bnum.pl"
-process = "/home/hosts/disk19/E_coli/Sahar/bin/prepare_meme_from_summary.py"
+# seqer = "/home/users/assafp/lib/sequence.pl"
+# cog_find = "/home/users/assafp/lib/cog_finder.pl"
+# bnumer = "/home/users/assafp/lib/gene2bnum.pl"
+seqer = "/home/hosts/disk16/niv/RILseq-files/bin/sequence.pl"
+cog_find = "/home/hosts/disk16/niv/RILseq-files/bin/cog_finder.pl"
+bnumer = "/home/hosts/disk16/niv/RILseq-files/bin/gene2bnum.pl"
+#process = "/home/hosts/disk19/E_coli/Sahar/bin/prepare_meme_from_summary.py"
+process = "/home/users/niv/RILseq/RILseq_accessories/RILseq_accessories-master/prepare_meme_from_summary.py"
 genome = "/home/hosts/disk19/reference_genomes/E_coli/genome.fa"
 for line in fileinput.input():
     run_line(line, genome, process, meme, seqer, mast, bnumer, cog_find)
-
-
